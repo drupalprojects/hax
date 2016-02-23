@@ -3,18 +3,21 @@
 /**
  * Edit mode callback.
  */
+
 /**
  * Implementation of hook_form().
  */
 function hax_page_edit_form($form, $form_state) {
-  $form = array();
   $node = menu_get_object();
+  // allow projects to jump in and implement a wysiwyg for hax to use
+  module_invoke_all('hax_inline_editor');
   $form['hax_body'] = array(
     '#type' => 'textfield',
     '#title' => t('body'),
     '#value' => $node->body['und'][0]['value'],
   );
-  $form['submit'] = array(
+  $form['actions']['#type'] = 'actions';
+  $form['actions']['submit'] = array(
     '#type' => 'submit',
     '#title' => t('Submit'),
     '#value' => 'submit'
@@ -23,13 +26,17 @@ function hax_page_edit_form($form, $form_state) {
 }
 
 /**
- * Implementation of hook_bean_form_submit().
+ * Implementation of hook_form_submit().
  */
 function hax_page_edit_form_submit($form, $form_state) {
   $node = menu_get_object();
-  $node->body['und'][0]['value'] = $form_state['input']['hax_body'];
+  $body = $form_state['input']['hax_body'];
+  $search = array('data-draggable="item"','data-draggable="target"','data-hax-processed="true"', 'draggable="true"', 'aria-grabbed="false"', 'tabindex="0"');
+  $body = str_replace($search, array(''), $body);
+  $node->body['und'][0]['value'] = $body;
   node_save($node);
   drupal_set_message(t('Page saved!'), 'status');
+  drupal_goto('node/' . $node->nid);
 }
 
 /**
@@ -54,4 +61,23 @@ function hax_page_edit($node) {
   $output .= _hax_render_toolbar();
 
   return $output;
+}
+
+/**
+ * Implements hook_form().
+ */
+function hax_settings_form($form, $form_state) {
+  $filters = filter_formats();
+  $list = array();
+  foreach ($filters as $name => $filter) {
+    $list[$name] = $filter->name;
+  }
+  $form['hax_inline_editor'] = array(
+    '#type' => 'select',
+    '#title' => t('Inline WYSIWYG'),
+    '#description' => t('What editor format do you want to use for HAX inline edit mode?'),
+    '#options' => $list,
+    '#default_value' => variable_get('hax_inline_editor','filtered_html'),
+  );
+  return system_settings_form($form);
 }
