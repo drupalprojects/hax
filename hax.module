@@ -24,7 +24,7 @@ function hax_menu() {
     'access arguments' => array('update', 1),
   );
   $items['node/%node/hax'] = array(
-    'title' => 'HAX authoring',
+    'title' => 'HAX mode',
     'description' => 'Edit the node with HAX',
     'page callback' => '_hax_node_form',
     'page arguments' => array(1),
@@ -33,7 +33,35 @@ function hax_menu() {
     'access callback' => '_hax_node_access',
     'access arguments' => array('update', 1),
   );
+  $items['admin/settings/hax'] = array(
+    'title' => 'HAX',
+    'description' => 'Settings for basic customizations to HAX.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('hax_settings'),
+    'type' => MENU_NORMAL_ITEM,
+    'access arguments' => array('administer site configuration'),
+  );
   return $items;
+}
+
+/**
+ * Helper function to make outline designer settings more obvious.
+ */
+function hax_settings($form, &$form_state) {
+  $form['hax_offset_left'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Offset'),
+    '#default_value' => variable_get('hax_offset_left', 0),
+    '#description' => "Helps with theme compatibility when positioning the context menu. Adjust this if HAX context menu doesn't correctly align with the side of your content when editing. Value is in pixels but should not include px. Some themes that mess with box-model may or may not have this issue.",
+  );
+  // collapse default state
+  $form['hax_autoload_element_list'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Elements to autoload'),
+    '#default_value' => variable_get('hax_autoload_element_list', 'video-player wikipedia-query pdf-element lrn-table media-image'),
+    '#description' => "This allows for auto-loading elements known to play nice with HAX. If you've written any webcomponents that won't automatically be loaded into the page via that module this allows you to attempt to auto-load them when HAX loads. For example, if you have a video-player element in your bower_components directory and want it to load on this interface, this would be a simple way to do that. Spaces only between elements, no comma",
+  );
+  return system_settings_form($form);
 }
 
 /**
@@ -86,16 +114,22 @@ function _hax_node_form($node) {
   $component->machine_name = 'cms-hax';
   $component->file = drupal_get_path('module', 'hax') . '/bower_components/cms-hax/cms-hax.html';
   _webcomponents_add_to_head($component, 10000);
-  // @todo need support for these to get added dynamically by the module
-  $elements = array('video-player', 'wikipedia-query', 'pdf-element', 'lrn-table', 'media-image');
+  // generate autoload list
+  $elementstring = variable_get('hax_autoload_element_list', 'video-player wikipedia-query pdf-element lrn-table media-image');
+  // blow up based on space
+  $elements = explode(' ', $elementstring);
   $components = '';
   foreach ($elements as $element) {
-    $components .= '<' . $element . ' slot="autoloader">' . '</' . $element . '>';
+    // sanity check
+    if (!empty($element)) {
+      $components .= '<' . $element . ' slot="autoloader">' . '</' . $element . '>';
+    }
   }
   // write content to screen, wrapped in tag to do all the work
   $content = '
-  <cms-hax end-point="' . base_path() . 'hax-node-save/' . $node->nid . '/' . drupal_get_token('hax') . '">
-    <div slot="body">' .   check_markup($node->body, $node->format) . '</div>
-  </cms-hax>';
+  <cms-hax end-point="' . base_path() . 'hax-node-save/' . $node->nid . '/' . drupal_get_token('hax') . '" body-offset-left="' . variable_get('hax_offset_left', 0) . '">'
+  . $components .
+    check_markup($node->body, $node->format)
+  .'</cms-hax>';
   return $content;
 }
