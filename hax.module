@@ -354,7 +354,9 @@ function _hax_site_connection() {
             "video",
             "audio",
             "pdf",
-            "svg"
+            "svg",
+            "document",
+            "csv"
           ],
           "resultMap": {
             "item": "data.file",
