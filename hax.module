@@ -29,18 +29,6 @@ function hax_preprocess_field(&$vars) {
   if ($vars['field_name'] == 'body' && $entity_type == 'node' && $view_mode == 'full'
     && \Drupal::config('hax.settings')->get('hax_autoload_element_node_view')) {
 
-    // Generate autoload list.
-    $elementstring = \Drupal::config('hax.settings')
-      ->get('hax_autoload_element_list');
-    // Blow up based on space.
-    $elements = explode(' ', $elementstring);
-    $components = '';
-    foreach ($elements as $element) {
-      if (!empty($element)) {
-        $components .= '<' . $element . ' slot="autoloader">' . '</' . $element . '>';
-      }
-    }
-
     $appStoreConnection = json_encode([
       'url' => base_path() . 'hax-app-store/' . \Drupal::csrfToken()->get(),
     ]);
@@ -57,8 +45,8 @@ function hax_preprocess_field(&$vars) {
     // @todo: convert to string replacement function or template.
     $vars['items'][0]['content']['#text'] = '<cms-hax open-default end-point="' . base_path() . 'hax-node-save/' . $node_id . '/' . \Drupal::csrfToken()
         ->get() . '" body-offset-left="' . \Drupal::config('hax.settings')
-        ->get('hax_offset_left') . '" app-store-connection=' . "'" . $appStoreConnection . "'" . '>'
-      . $components . $vars['items'][0]['content']['#text'] . '</cms-hax>';
+        ->get('hax_offset_left') . '" app-store-connection=' . "'" . $appStoreConnection . "'" . '><template>'
+     . $vars['items'][0]['content']['#text'] . '</template></cms-hax>';
 
   }
 
@@ -88,6 +76,36 @@ function hax_hax_app_store() {
     array_push($json, $tmp);
   }
   return $json;
+}
+
+/**
+ * Implements hook_hax_blox().
+ */
+function hax_hax_blox() {
+  $hax = new HAXService();
+  $blox = $hax->loadBaseBlox();
+  return $blox;
+}
+
+/**
+ * Implements hook_hax_stax().
+ */
+function hax_hax_stax() {
+  $hax = new HAXService();
+  $stax = $hax->loadBaseStax();
+  return $stax;
+}
+
+/**
+ * Implements hook_hax_autoloader().
+ */
+function hax_hax_autoloader() {
+  // Generate autoload list.
+  $autoloaderstring = \Drupal::config('hax.settings')
+    ->get('hax_autoload_element_list');
+  // Blow up based on space.
+  $autoloader = explode(' ', $autoloaderstring);
+  return $autoloader;
 }
 
 /**
