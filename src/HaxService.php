@@ -7,24 +7,20 @@ namespace Drupal\hax;
  *
  * @package Drupal\hax
  */
-class HaxService {
+class HAXService {
 
   /**
-   * Load app store.
-   *
-   * @param array $api_keys
-   *   Array of API keys per service.
-   *
-   * @return array
-   *   An array of app store definitions based on passing in the api keys for
-   *   the ones we have baked in support for.
+   * returns an array of app store definitions based
+   * on passing in the apikeys for the ones we have
+   * baked in support for.
+   * @param  array $apikeys  array of API keys per service
+   * @return array           HAX appstore specification
    */
-  public function loadBaseAppStore(array $api_keys = []) {
-    $json = [];
-
-    // YouTube.
-    if (isset($api_keys['youtube'])) {
-      $json_string = '{
+  public function loadBaseAppStore($apikeys = array()) {
+    $json = array();
+    // youtube
+    if (isset($apikeys['youtube'])) {
+      $jsonstring = '{
         "details": {
           "title": "Youtube",
           "icon": "av:play-arrow",
@@ -38,7 +34,7 @@ class HaxService {
             "protocol": "https",
             "url": "www.googleapis.com/youtube/v3",
             "data": {
-              "key": "' . $api_keys['youtube'] . '"
+              "key": "' . $apikeys['youtube'] . '"
             },
             "operations": {
               "browse": {
@@ -88,13 +84,12 @@ class HaxService {
             }
         }
       }';
-      $tmp = json_decode($json_string);
+      $tmp = json_decode($jsonstring);
       array_push($json, $tmp);
     }
-
-    // Meme Generator.
-    if (isset($api_keys['memegenerator'])) {
-      $json_string = '{
+    // memegenerator
+    if (isset($apikeys['memegenerator'])) {
+      $jsonstring = '{
         "details": {
           "title": "Meme generator",
           "icon": "android",
@@ -108,7 +103,7 @@ class HaxService {
           "protocol": "http",
           "url": "version1.api.memegenerator.net",
           "data": {
-            "apiKey": "' . $api_keys['memegenerator'] . '"
+            "apiKey": "' . $apikeys['memegenerator'] . '"
           },
           "operations": {
             "browse": {
@@ -151,13 +146,12 @@ class HaxService {
           }
         }
       }';
-      $tmp = json_decode($json_string);
+      $tmp = json_decode($jsonstring);
       array_push($json, $tmp);
     }
-
-    // Vimeo.
-    if (isset($api_keys['vimeo'])) {
-      $json_string = '{
+    // vimeo
+    if (isset($apikeys['vimeo'])) {
+      $jsonstring = '{
         "details": {
           "title": "Vimeo",
           "icon": "av:play-circle-filled",
@@ -171,7 +165,7 @@ class HaxService {
           "protocol": "https",
           "url": "api.vimeo.com",
           "data": {
-            "access_token": "' . $api_keys['vimeo'] . '"
+            "access_token": "' . $apikeys['vimeo'] . '"
           },
           "operations": {
             "browse": {
@@ -220,13 +214,12 @@ class HaxService {
           }
         }
       }';
-      $tmp = json_decode($json_string);
+      $tmp = json_decode($jsonstring);
       array_push($json, $tmp);
     }
-
-    // Giphy.
-    if (isset($api_keys['giphy'])) {
-      $json_string = '{
+    // giphy
+    if (isset($apikeys['giphy'])) {
+      $jsonstring = '{
         "details": {
           "title": "Giphy",
           "icon": "gif",
@@ -240,7 +233,7 @@ class HaxService {
           "protocol": "https",
           "url": "api.giphy.com",
           "data": {
-            "api_key": "' . $api_keys['giphy'] . '"
+            "api_key": "' . $apikeys['giphy'] . '"
           },
           "operations": {
             "browse": {
@@ -303,13 +296,12 @@ class HaxService {
           }
         }
       }';
-      $tmp = json_decode($json_string);
+      $tmp = json_decode($jsonstring);
       array_push($json, $tmp);
     }
-
-    // Unsplash.
-    if (isset($api_keys['unsplash'])) {
-      $json_string = '{
+    // unsplash
+    if (isset($apikeys['unsplash'])) {
+      $jsonstring = '{
         "details": {
           "title": "Unsplash",
           "icon": "image:collections",
@@ -323,7 +315,7 @@ class HaxService {
           "protocol": "https",
           "url": "api.unsplash.com",
           "data": {
-            "client_id": "' . $api_keys['unsplash'] . '"
+            "client_id": "' . $apikeys['unsplash'] . '"
           },
           "operations": {
             "browse": {
@@ -350,7 +342,7 @@ class HaxService {
                 "defaultGizmoType": "image",
                 "items": "results",
                 "preview": {
-                  "title": "",
+                  "title": "tags.0.title",
                   "details": "description",
                   "image": "urls.thumb",
                   "id": "id"
@@ -367,13 +359,12 @@ class HaxService {
           }
         }
       }';
-      $tmp = json_decode($json_string);
+      $tmp = json_decode($jsonstring);
       array_push($json, $tmp);
     }
-
-    // Flickr.
-    if (isset($api_keys['flickr'])) {
-      $json_string = '{
+    // flickr
+    if (isset($apikeys['flickr'])) {
+      $jsonstring = '{
         "details": {
           "title": "Flickr",
           "icon": "image:collections",
@@ -388,7 +379,7 @@ class HaxService {
           "protocol": "https",
           "url": "api.flickr.com",
           "data": {
-            "api_key": "' . $api_keys['flickr'] . '"
+            "api_key": "' . $apikeys['flickr'] . '"
           },
           "operations": {
             "browse": {
@@ -455,13 +446,12 @@ class HaxService {
           }
         }
       }';
-      $tmp = json_decode($json_string);
+      $tmp = json_decode($jsonstring);
       array_push($json, $tmp);
     }
-
-    // Pixabay.
-    if (isset($api_keys['pixabay'])) {
-      $json_string = '{
+    // pixabay
+    if (isset($apikeys['pixabay'])) {
+      $jsonstring = '{
         "details": {
           "title": "Pixabay images",
           "icon": "places:all-inclusive",
@@ -475,7 +465,7 @@ class HaxService {
           "protocol": "https",
           "url": "pixabay.com",
           "data": {
-            "key": "' . $api_keys['pixabay'] . '"
+            "key": "' . $apikeys['pixabay'] . '"
           },
           "operations": {
             "browse": {
@@ -518,12 +508,92 @@ class HaxService {
           }
         }
       }';
-      $tmp = json_decode($json_string);
+      $tmp = json_decode($jsonstring);
       array_push($json, $tmp);
     }
-
-    // Nasa.
-    $json_string = '{
+    // Google Poly
+    if (isset($apikeys['googlepoly'])) {
+      $jsonstring = '{
+        "details": {
+          "title": "Google Poly",
+          "icon": "icons:3d-rotation",
+          "color": "red",
+          "author": "Google",
+          "description": "Google 3D object sharing service",
+          "status": "available",
+          "tags": ["3D", "creative commons", "crowdsourced"]
+        },
+        "connection": {
+          "protocol": "https",
+          "url": "poly.googleapis.com/v1",
+          "data": {
+            "key": "' . $apikeys['googlepoly'] . '"
+          },
+          "operations": {
+            "browse": {
+              "method": "GET",
+              "endPoint": "assets",
+              "pagination": {
+                "style": "page",
+                "props": {
+                  "previous": "prevPageToken",
+                  "next": "nextPageToken",
+                  "total_items": "pageInfo.totalResults"
+                }
+              },
+              "search": {
+                "keywords": {
+                  "title": "Search",
+                  "type": "string"
+                },
+                "category": {
+                  "title": "Category",
+                  "type": "string",
+                  "value": "",
+                  "component": {
+                    "name": "dropdown-select",
+                    "valueProperty": "value",
+                    "slot": "<paper-item value=\'\'>Any</paper-item><paper-item value=\'animals\'>Animals</paper-item><paper-item value=\'architecture\'>Architecture</paper-item><paper-item value=\'art\'>Art</paper-item><paper-item value=\'food\'>Food</paper-item><paper-item value=\'nature\'>Nature</paper-item><paper-item value=\'objects\'>Objects</paper-item><paper-item value=\'people\'>People</paper-item><paper-item value=\'scenes\'>Scenes</paper-item><paper-item value=\'technology\'>Technology</paper-item><paper-item value=\'transport\'>Transport</paper-item>"
+                  }
+                }
+              },
+              "data": {
+                "pageSize": "20"
+              },
+              "resultMap": {
+                "defaultGizmoType": "video",
+                "items": "assets",
+                "preview": {
+                  "title": "displayName",
+                  "details": "description",
+                  "image": "thumbnail.url",
+                  "id": "name"
+                },
+                "gizmo": {
+                  "title": "displayName",
+                  "description": "description",
+                  "id": {
+                    "property": "name",
+                    "op": "split",
+                    "delimiter": "/",
+                    "position": "1"
+                  },
+                  "image": "thumbnail.url",
+                  "_url_source": "https://poly.google.com/view/<%= id %>/embed",
+                  "caption": "description",
+                  "citation": "authorName",
+                  "license": "license"
+                }
+              }
+            }
+          }
+        }
+      }';
+      $tmp = json_decode($jsonstring);
+      array_push($json, $tmp);
+    }
+    // nasa
+    $jsonstring = '{
       "details": {
         "title": "NASA",
         "icon": "places:all-inclusive",
@@ -578,11 +648,10 @@ class HaxService {
         }
       }
     }';
-    $tmp = json_decode($json_string);
+    $tmp = json_decode($jsonstring);
     array_push($json, $tmp);
-
-    // Sketchfab.
-    $json_string = '{
+    // sketchfab
+    $jsonstring = '{
       "details": {
         "title": "Sketchfab",
         "icon": "icons:3d-rotation",
@@ -646,11 +715,10 @@ class HaxService {
         }
       }
     }';
-    $tmp = json_decode($json_string);
+    $tmp = json_decode($jsonstring);
     array_push($json, $tmp);
-
-    // Dailymotion.
-    $json_string = '{
+    // dailymotion
+    $jsonstring = '{
       "details": {
         "title": "Dailymotion",
         "icon": "av:play-circle-filled",
@@ -709,11 +777,10 @@ class HaxService {
         }
       }
     }';
-    $tmp = json_decode($json_string);
+    $tmp = json_decode($jsonstring);
     array_push($json, $tmp);
-
-    // Wikipedia.
-    $json_string = '{
+    // wikipedia
+    $jsonstring = '{
       "details": {
         "title": "Wikipedia",
         "icon": "account-balance",
@@ -727,14 +794,15 @@ class HaxService {
         "protocol": "https",
         "url": "en.wikipedia.org",
         "data": {
-          "action":"query",
-          "list":"search",
-          "format":"json"
+          "action": "query",
+          "list": "search",
+          "format": "json",
+          "origin": "*"
         },
         "operations": {
           "browse": {
             "method": "GET",
-            "endPoint": "w/api.php",
+            "endPoint": "w\/api.php",
             "pagination": {
               "style": "offset",
               "props": {
@@ -747,16 +815,15 @@ class HaxService {
                 "type": "string"
               }
             },
-            "data": {
-            },
+            "data": {},
             "resultMap": {
+              "image": "https://en.wikipedia.org/static/images/project-logos/enwiki.png",
               "defaultGizmoType": "content",
               "items": "query.search",
               "preview": {
                 "title": "title",
                 "details": "snippet",
-                "image": "pageid",
-                "id": "pageid"
+                "id": "title"
               },
               "gizmo": {
                 "_url_source": "https://en.wikipedia.org/wiki/<%= id %>",
@@ -770,11 +837,10 @@ class HaxService {
         }
       }
     }';
-    $tmp = json_decode($json_string);
+    $tmp = json_decode($jsonstring);
     array_push($json, $tmp);
-
-    // Cc-mixter.
-    $json_string = '{
+    // cc-mixter
+    $jsonstring = '{
       "details": {
         "title": "CC Mixter",
         "icon": "av:library-music",
@@ -839,11 +905,10 @@ class HaxService {
         }
       }
     }';
-    $tmp = json_decode($json_string);
+    $tmp = json_decode($jsonstring);
     array_push($json, $tmp);
-
-    // Codepen.
-    $json_string = '{
+    // codepen
+    $jsonstring = '{
       "details": {
         "title": "Codepen.io",
         "icon": "code",
@@ -897,26 +962,279 @@ class HaxService {
         }
       }
     }';
-    $tmp = json_decode($json_string);
+    $tmp = json_decode($jsonstring);
     array_push($json, $tmp);
 
     return $json;
   }
 
   /**
-   * Supported apps.
-   *
-   * Return an array of the base app keys we support. This can reduce the time
-   * to integrate with other solutions.
-   *
-   * @return array
-   *   Service names keyed by their key name.
+   * Returns some example / default BLOX definitions, which are
+   * the layouts as defined by HAX to go in a grid-plate element.
+   * This is the specification required by the HAX appstore in
+   * order to correctly present the listing of layouts in their 
+   * associated layout drawer.
+   * @return array           HAX blox specification
+   */
+  public function loadBaseBlox() {
+    $jsonstring = '[
+    {
+      "details": {
+        "title": "50% columns",
+        "author": "ELMS:LN",
+        "icon": "hax:6/6",
+        "status": "available",
+        "layout": "6/6"
+      },
+      "blox": [
+        {
+          "tag": "h2",
+          "properties": {
+            "slot": "col-1"
+          },
+          "content": "Heading"
+        },
+        {
+          "tag": "p",
+          "properties": {
+            "slot": "col-1"
+          },
+          "content": "A paragraph of text would go here to describe the work."
+        },
+        {
+          "tag": "place-holder",
+          "properties": {
+            "slot": "col-2",
+            "type": "image"
+          },
+          "content": ""
+        }
+      ]
+    },
+    {
+      "details": {
+        "title": "66 / 33 columns",
+        "author": "ELMS:LN",
+        "icon": "hax:8/4",
+        "status": "available",
+        "layout": "8/4"
+      },
+      "blox": [{
+          "tag": "place-holder",
+          "properties": {
+            "slot": "col-1",
+            "type": "text"
+          },
+          "content": ""
+        },
+        {
+          "tag": "place-holder",
+          "properties": {
+            "slot": "col-2",
+            "type": "image"
+          },
+          "content": ""
+        }
+      ]
+    },
+    {
+      "details": {
+        "title": "33% columns",
+        "author": "ELMS:LN",
+        "icon": "hax:4/4/4",
+        "status": "available",
+        "layout": "4/4/4"
+      },
+      "blox": [
+        {
+          "tag": "place-holder",
+          "properties": {
+            "slot": "col-1",
+            "type": "image"
+          },
+          "content": ""
+        },
+        {
+          "tag": "place-holder",
+          "properties": {
+            "slot": "col-2",
+            "type": "image"
+          },
+          "content": ""
+        },
+        {
+          "tag": "place-holder",
+          "properties": {
+            "slot": "col-3",
+            "type": "image"
+          },
+          "content": ""
+        }
+      ]
+    },
+    {
+      "details": {
+        "title": "33 / 66 columns",
+        "author": "ELMS:LN",
+        "icon": "hax:4/8",
+        "status": "available",
+        "layout": "4/8"
+      },
+      "blox": [
+        {
+          "tag": "place-holder",
+          "properties": {
+            "slot": "col-2",
+            "type": "text"
+          },
+          "content": ""
+        },
+        {
+          "tag": "place-holder",
+          "properties": {
+            "slot": "col-1",
+            "type": "image"
+          },
+          "content": ""
+        },
+        {
+          "tag": "place-holder",
+          "properties": {
+            "slot": "col-1",
+            "type": "image"
+          },
+          "content": ""
+        },
+        {
+          "tag": "place-holder",
+          "properties": {
+            "slot": "col-1",
+            "type": "image"
+          },
+          "content": ""
+        }
+      ]
+    },
+    {
+      "details": {
+        "title": "25% columns",
+        "author": "ELMS:LN",
+        "icon": "hax:3/3/3/3",
+        "status": "available",
+        "layout": "3/3/3/3"
+      },
+      "blox": [
+        {
+          "tag": "place-holder",
+          "properties": {
+            "slot": "col-1",
+            "type": "image"
+          },
+          "content": ""
+        },
+        {
+          "tag": "place-holder",
+          "properties": {
+            "slot": "col-2",
+            "type": "image"
+          },
+          "content": ""
+        },
+        {
+          "tag": "place-holder",
+          "properties": {
+            "slot": "col-3",
+            "type": "image"
+          },
+          "content": ""
+        }, 
+        {
+          "tag": "place-holder",
+          "properties": {
+            "slot": "col-4",
+            "type": "image"
+          },
+          "content": ""
+        }
+      ]
+    }
+    ]';
+    return json_decode($jsonstring);
+  }
+
+  /**
+   * Returns some example STAX definitions, which are
+   * predefined sets of items which can be broken apart
+   * after the fact. This is like a template in traditional WYSIWYGs.
+   * @return array           HAX stax specification
+   */
+  public function loadBaseStax() {
+    $jsonstring = '[{
+      "details": {
+        "title": "Example Lesson",
+        "author": "ELMS:LN",
+        "description": "An example of what HAX can do",
+        "status": "available",
+        "rating": "0",
+        "tags": ["example"]
+      },
+      "stax": [
+        {
+          "tag": "h2",
+          "properties": {},
+          "content": "Introduction to ELMS: Learning Network"
+        },
+        {
+          "tag": "p",
+          "properties": {},
+          "content": "What is ELMS: Learning Network? How is it fundamentally different from other learning technologies? Why is it your reading this when it\'s example text that you\'ve just added to see how to make a really solid introduction to a new unit of instruction? Let\'s keep reading to find out!"
+        },
+        {
+          "tag": "video-player",
+          "properties": {
+            "style": "width: 75%; margin: 0px auto; display: block;",
+            "source": "https://www.youtube.com/watch?v=pKLPQ4ufo64",
+            "src": "https://www.youtube-nocookie.com/embed/pKLPQ4ufo64?showinfo=0&controls=1&rel=0",
+            "iframed": true,
+            "sandboxed": false,
+            "width": "560",
+            "height": "315",
+            "responsive": true,
+            "caption": "What is ELMS:LN? Why is it fundamentally different from any other educational technology that\'s ever existed? What is sustainable innovation? Why is this so ...",
+            "secondaryColor": "#fff9c4",
+            "textColor": "#000000",
+            "secondaryColorClass": "yellow lighten-4",
+            "textColorClass": "black-text",
+            "ytNocookie": true,
+            "ytSuggested": false,
+            "ytControls": true,
+            "ytTitle": false,
+            "vimeoTitle": false,
+            "vimeoByline": false,
+            "vimeoPortrait": false,
+            "videoColor": "FF031D"
+          },
+          "content": ""
+        }
+      ]
+    }]';
+    return json_decode($jsonstring);
+  }
+
+  /**
+   * Return an array of the base app keys we support. This
+   * can reduce the time to integrate with other solutions.
+   * @return array  service names keyed by their key name
    */
   public function baseSupportedApps() {
     return array(
       'youtube' => array(
         'name' => 'YouTube',
         'docs' => 'https://developers.google.com/youtube/v3/getting-started',
+      ),
+      'googlepoly' => array(
+        'name' => 'Google Poly',
+        'docs' => 'https://developers.google.com/poly/develop/api',
       ),
       'memegenerator' => array(
         'name' => 'Meme generator',
@@ -944,5 +1262,4 @@ class HaxService {
       ),
     );
   }
-
 }
