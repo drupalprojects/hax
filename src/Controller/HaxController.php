@@ -226,6 +226,9 @@ class HaxController extends NodeViewController {
       // Add/alter apps.
       $appStore = \Drupal::moduleHandler()->invokeAll('hax_app_store');
       \Drupal::moduleHandler()->alter('hax_app_store', $appStore);
+      // Add/alter layouts.
+      $autoloaderList = \Drupal::moduleHandler()->invokeAll('hax_autoloader');
+      \Drupal::moduleHandler()->alter('hax_autoloader', $autoloaderList);
       // Add/alter templates. For reference, see appstore.json in
       // libraries/webcomponents/polymer/bower_components/hax-body/demo/
       $staxList = \Drupal::moduleHandler()->invokeAll('hax_stax');
@@ -243,6 +246,7 @@ class HaxController extends NodeViewController {
         'apps' => $appStore,
         'stax' => $staxList,
         'blox' => $bloxList,
+        'autoloader' => $autoloaderList,
       ]));
 
       return $response;
