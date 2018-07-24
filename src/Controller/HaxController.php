@@ -180,7 +180,7 @@ class HaxController extends NodeViewController {
       if (isset($upload['tmp_name']) && is_uploaded_file($upload['tmp_name'])) {
         // Get contents of the file if it was uploaded into a variable.
         $data = file_get_contents($upload['tmp_name']);
-        $params = filter_var_array($_GET, FILTER_SANITIZE_STRING);
+        $params = filter_var_array($_POST, FILTER_SANITIZE_STRING);
         // See if we had a file_wrapper defined, otherwise this is public.
         if (isset($params['file_wrapper'])) {
           $file_wrapper = $params['file_wrapper'];
@@ -190,14 +190,22 @@ class HaxController extends NodeViewController {
         }
         // See if Drupal can load from this data source.
         if ($file = file_save_data($data, $file_wrapper . '://' . $upload['name'])) {
-          $file->save();
-          $file->url = file_create_url($file->getFileUri());
-          $return = ['file' => $file];
+          $return = array(
+            'file' => array( 
+              'url' => file_create_url($file->getFileUri()),
+              'uri' => $file->getFileUri(),
+              'status' => $file->status,
+              'status' => $file->timestamp,
+              'uid' => $file->uid,
+              'uuid' => $file->uuid,
+              'filemime' => $file->getMimeType(),
+              'filename' => $file->getFilename(),
+            ),
+          );
           $status = 200;
         }
       }
     }
-
     // Build the response object.
     $response = new Response();
     $response->headers->set('Content-Type', 'application/json');
